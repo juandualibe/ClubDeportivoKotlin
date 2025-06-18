@@ -8,8 +8,10 @@ import com.example.clubdeportivog3.model.Socio
 import com.example.clubdeportivog3.model.NoSocio
 import com.example.clubdeportivog3.model.Actividad
 
+// Clase helper para manejar la base de datos SQLite del club deportivo
 class ClubDeportivoBD(context: Context) :
     SQLiteOpenHelper(context, "club_deportivo.db", null, 4) {
+    // Se crean todas las tablas necesarias al inicializar la base de datos por primera vez
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE IF NOT EXISTS socios (
@@ -90,7 +92,10 @@ class ClubDeportivoBD(context: Context) :
         onCreate(db)
     }
 
+    // Métodos para socios
+
     // Inserta un nuevo socio en la base de datos
+    // Devuelve true si la operación fue exitosa
     fun insertarSocio(socio: Socio): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -110,6 +115,7 @@ class ClubDeportivoBD(context: Context) :
     }
 
     // Busca un socio por su ID.
+    // Devuelve un objeto Socio o null si no se encuentra
     fun obtenerSocio(id: Int): Socio? {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -135,6 +141,7 @@ class ClubDeportivoBD(context: Context) :
         return socio
     }
 
+    //Verificar q el dni no este ya inscripto
     fun dniYaExiste(dni: String, id: Int? = null): Boolean {
         val db = this.readableDatabase
         var existeEnSocios = false
@@ -179,6 +186,7 @@ class ClubDeportivoBD(context: Context) :
         return existeEnSocios || existeEnNoSocios
     }
 
+    // Eliminar socio por id
     fun eliminarSocio(id: Int): Boolean {
         val db = writableDatabase
         val resultado = db.delete("socios", "id = ?", arrayOf(id.toString()))
@@ -186,6 +194,8 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // Actualiza los datos de un socio existente.
+    // Devuelve true si se realizó la actualización
     fun actualizarSocio(socio: Socio): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -204,6 +214,8 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // Marca al socio como "pago al día".
+    // Devuelve true si se actualizó correctamente
     fun registrarPago(socioId: Int): Boolean {
         val db = this.writableDatabase
         val CUOTA_FIJA = 15000.0  // Definimos la cuota fija
@@ -224,6 +236,8 @@ class ClubDeportivoBD(context: Context) :
         return filasActualizadas > 0
     }
 
+    // Inscribe a un socio en una actividad determinada.
+    // Devuelve false si ya estaba inscripto o hubo error
     fun inscribirSocioEnActividad(socioId: Int, actividadId: Int): Boolean {
         val db = writableDatabase
         return try {
@@ -242,6 +256,7 @@ class ClubDeportivoBD(context: Context) :
         }
     }
 
+    // Verifica si un socio ya está inscripto en una actividad
     fun estaInscripto(socioId: Int, actividadId: Int): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -254,6 +269,7 @@ class ClubDeportivoBD(context: Context) :
         return existe
     }
 
+    // Eliminar inscripción socio
     fun eliminarInscripcionSocio(socio_id: Int, actividad_id: Int): Boolean {
         val db = writableDatabase
         val resultado = db.delete("inscripciones_socios", "socio_id = ? AND actividad_id = ?", arrayOf(socio_id.toString(), actividad_id.toString()))
@@ -261,6 +277,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // Devuelve la lista completa de socios almacenados
     fun obtenerSocios(): List<Socio> {
         val lista = mutableListOf<Socio>()
         val db = readableDatabase
@@ -315,6 +332,7 @@ class ClubDeportivoBD(context: Context) :
     }
     // --- FIN MÉTODO AGREGADO ---
 
+    // Devuelve las actividades en las que se inscribio un socio
     fun obtenerActividadesSocio(socioId: Int): List<Actividad> {
         val lista = mutableListOf<Actividad>()
         val db = readableDatabase
@@ -345,6 +363,10 @@ class ClubDeportivoBD(context: Context) :
         return lista
     }
 
+    // Métodos para NoSocio
+
+
+    // AGREGAR NO SOCIO
     fun insertarNoSocio(noSocio: NoSocio): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -361,6 +383,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado != -1L
     }
 
+    // ELIMINAR NO SOCIO POR ID
     fun eliminarNoSocio(id: Int): Boolean {
         val db = writableDatabase
         val resultado = db.delete("nosocios", "id = ?", arrayOf(id.toString()))
@@ -368,6 +391,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    //no socio unico
     fun obtenerNoSocio(numero: Int): NoSocio? {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -392,6 +416,7 @@ class ClubDeportivoBD(context: Context) :
         return noSocio
     }
 
+    //lista de no socios
     fun obtenerNoSocios(): List<NoSocio> {
         val lista = mutableListOf<NoSocio>()
         val db = readableDatabase
@@ -416,6 +441,7 @@ class ClubDeportivoBD(context: Context) :
         return lista
     }
 
+    // Actualizar no socio
     fun actualizarNoSocio(noSocio: NoSocio): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -432,6 +458,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // Lista de las actividades de un no socio
     fun obtenerActividadesNoSocio(no_socio_id: Int): List<Actividad> {
         val lista = mutableListOf<Actividad>()
         val db = readableDatabase
@@ -461,6 +488,7 @@ class ClubDeportivoBD(context: Context) :
         return lista
     }
 
+    // Metodo para inscribir al Nosocio en actividades
     fun inscribirNoSocioEnActividad(noSocioId: Int, actividadId: Int): Boolean {
         val db = writableDatabase
         var exito = false
@@ -504,6 +532,7 @@ class ClubDeportivoBD(context: Context) :
         return exito
     }
 
+    //VERIFICA QUE EL NO SOCIO NO ESTÉ INSCRIPTO EN LA ACTIVIDAD, PARA NO INSCRIBIRSE DOS VECES
     fun estaNoSocioInscriptoEnActividad(noSocioId: Int, actividadId: Int): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -516,6 +545,7 @@ class ClubDeportivoBD(context: Context) :
         return existe
     }
 
+    // REVOCAR INSCRIPCION NO SOCIO
     fun eliminarInscripcionNoSocio(no_socio_id: Int, actividad_id: Int): Boolean {
         val db = writableDatabase
         val resultado = db.delete("inscripciones_nosocios", "no_socio_id = ? AND actividad_id = ?", arrayOf(no_socio_id.toString(), actividad_id.toString()))
@@ -523,6 +553,9 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // METODOS PARA ACTIVIDADES
+
+    // AGREGAR ACTIVIDAD
     fun insertarActividad(actividad: Actividad): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -538,6 +571,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado != -1L
     }
 
+    // ELIMINAR ACTIVIDAD POR ID
     fun eliminarActividad(id: Int): Boolean {
         val db = writableDatabase
         val resultado = db.delete("actividades", "id = ?", arrayOf(id.toString()))
@@ -545,6 +579,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // ACTUALIZAR ACTIVIDAD
     fun actualizarActividad(actividad: Actividad): Boolean {
         val db = writableDatabase
         val valores = ContentValues().apply {
@@ -560,6 +595,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado > 0
     }
 
+    // LISTA DE ACTIVIDADES
     fun obtenerActividades(): List<Actividad> {
         val lista = mutableListOf<Actividad>()
         val db = readableDatabase
@@ -583,6 +619,7 @@ class ClubDeportivoBD(context: Context) :
         return lista
     }
 
+    // OBTENER ACTIVIDAD POR ID
     fun obtenerActividadPorId(id: Int): Actividad? {
         val db = readableDatabase
         var actividad: Actividad? = null
@@ -603,6 +640,7 @@ class ClubDeportivoBD(context: Context) :
         return actividad
     }
 
+    // VERIFICA EL CUPO DE LA ACTIVIDAD
     fun obtenerCupoDisponible(actividadId: Int, cupoMaximo: Int): Int {
         val db = readableDatabase
         val cursorSocios = db.rawQuery(
@@ -627,6 +665,8 @@ class ClubDeportivoBD(context: Context) :
         return if (cupoDisponible >= 0) cupoDisponible else 0
     }
 
+    // METODO PARA LOGIN AL SISTEMA
+    // METODO PARA CREAR USUARIO
     fun registrarAdmin(usuario: String, contrasena: String): Boolean {
         val db = writableDatabase
         val cursor = db.rawQuery("SELECT * FROM admin WHERE usuario = ?", arrayOf(usuario))
@@ -645,6 +685,7 @@ class ClubDeportivoBD(context: Context) :
         return resultado != -1L
     }
 
+    // INICIO DE SESIÓN
     fun verificarLogin(usuario: String, contrasena: String): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
