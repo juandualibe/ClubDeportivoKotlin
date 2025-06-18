@@ -135,30 +135,47 @@ class ClubDeportivoBD(context: Context) :
         return socio
     }
 
-    fun dniYaExiste(dni: String, socioId: Int? = null): Boolean {
+    fun dniYaExiste(dni: String, id: Int? = null): Boolean {
         val db = this.readableDatabase
-        val querySocios = if (socioId != null) {
+        var existeEnSocios = false
+        var existeEnNoSocios = false
+
+        // Verificar en tabla de socios excluyendo el socio actual si estamos editando
+        val querySocios = if (id != null) {
             "SELECT COUNT(*) FROM socios WHERE dni = ? AND id != ?"
         } else {
             "SELECT COUNT(*) FROM socios WHERE dni = ?"
         }
-        val cursorSocios = if (socioId != null) {
-            db.rawQuery(querySocios, arrayOf(dni, socioId.toString()))
+
+        val cursorSocios = if (id != null) {
+            db.rawQuery(querySocios, arrayOf(dni, id.toString()))
         } else {
             db.rawQuery(querySocios, arrayOf(dni))
         }
-        var existeEnSocios = false
+
         if (cursorSocios.moveToFirst()) {
             existeEnSocios = cursorSocios.getInt(0) > 0
         }
         cursorSocios.close()
-        val queryNoSocios = "SELECT COUNT(*) FROM nosocios WHERE dni = ?"
-        val cursorNoSocios = db.rawQuery(queryNoSocios, arrayOf(dni))
-        var existeEnNoSocios = false
+
+        // Verificar en tabla de no socios excluyendo el no socio actual si estamos editando
+        val queryNoSocios = if (id != null) {
+            "SELECT COUNT(*) FROM nosocios WHERE dni = ? AND id != ?"
+        } else {
+            "SELECT COUNT(*) FROM nosocios WHERE dni = ?"
+        }
+
+        val cursorNoSocios = if (id != null) {
+            db.rawQuery(queryNoSocios, arrayOf(dni, id.toString()))
+        } else {
+            db.rawQuery(queryNoSocios, arrayOf(dni))
+        }
+
         if (cursorNoSocios.moveToFirst()) {
             existeEnNoSocios = cursorNoSocios.getInt(0) > 0
         }
         cursorNoSocios.close()
+
         return existeEnSocios || existeEnNoSocios
     }
 
@@ -189,15 +206,20 @@ class ClubDeportivoBD(context: Context) :
 
     fun registrarPago(socioId: Int): Boolean {
         val db = this.writableDatabase
+        val CUOTA_FIJA = 15000.0  // Definimos la cuota fija
+
         val values = ContentValues().apply {
-            put("pagoAlDia", 1)
+            put("pagoAlDia", 1)    // Actualiza el estado de pago
+            put("cuota", CUOTA_FIJA)  // Actualiza el monto de la cuota al valor correcto
         }
+
         val filasActualizadas = db.update(
             "socios",
             values,
             "id = ?",
             arrayOf(socioId.toString())
         )
+
         db.close()
         return filasActualizadas > 0
     }

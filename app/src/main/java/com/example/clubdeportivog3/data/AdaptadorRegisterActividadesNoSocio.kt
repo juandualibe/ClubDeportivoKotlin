@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.activities.AddedRegistrationAceptedActivity
-import com.example.clubdeportivog3.data.ClubDeportivoBD
 import com.example.clubdeportivog3.model.Actividad
 import com.example.clubdeportivog3.model.NoSocio
 
@@ -78,8 +77,16 @@ class AdaptadorRegisterActividadesNoSocio(
                             .setPositiveButton("Aceptar", null)
                             .show()
 
+                        // NUEVA VALIDACIÓN: Verificar si tiene apto físico
+                    } else if (!noSocio.aptoFisico) {
+                        AlertDialog.Builder(holder.itemView.context)
+                            .setTitle("Apto físico requerido")
+                            .setMessage("El no socio debe presentar el apto físico para inscribirse en actividades.")
+                            .setPositiveButton("Aceptar", null)
+                            .show()
+
                     } else {
-                        // NUEVA VALIDACIÓN: Verificar si el pagoDiario del NoSocio coincide con el monto de la actividad
+                        // VALIDACIÓN: Verificar si el pagoDiario del NoSocio coincide con el monto de la actividad
                         if (noSocio.pagoDiario < actividad.monto) {
                             // Mostrar alerta de pago insuficiente
                             AlertDialog.Builder(holder.itemView.context)

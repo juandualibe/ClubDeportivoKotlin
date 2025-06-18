@@ -12,6 +12,7 @@ import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.activities.AddedRegistrationAceptedActivity
 import com.example.clubdeportivog3.model.Actividad
 
+//Adaptador para manejar el registro en actividades de SOCIOS
 class AdaptadorRegisterActividades(
     private val actividades: MutableList<Actividad>,
     private val socioNumero: Int,
@@ -34,6 +35,9 @@ class AdaptadorRegisterActividades(
         val actividad = actividades[position]
         val db = ClubDeportivoBD(holder.itemView.context)
 
+        // Obtener el Socio actual
+        val socio = db.obtenerSocio(socioNumero)
+
         // Calcular cupo disponible dinámicamente
         val cupoDisponible = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
 
@@ -43,6 +47,16 @@ class AdaptadorRegisterActividades(
         holder.btnInscribir.setOnClickListener {
             // Recalcular cupo al momento del click
             val cupoActualizado = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
+
+            // Verificar si el Socio existe
+            if (socio == null) {
+                AlertDialog.Builder(holder.itemView.context)
+                    .setTitle("Error")
+                    .setMessage("No se pudo encontrar la información del socio.")
+                    .setPositiveButton("Aceptar", null)
+                    .show()
+                return@setOnClickListener
+            }
 
             AlertDialog.Builder(holder.itemView.context)
                 .setMessage("¿Está seguro que desea inscribir al socio a esta actividad?")
@@ -62,6 +76,15 @@ class AdaptadorRegisterActividades(
                             .setMessage("No hay cupos disponibles para esta actividad.")
                             .setPositiveButton("Aceptar", null)
                             .show()
+
+                        // NUEVA VALIDACIÓN: Verificar si tiene apto físico
+                    } else if (!socio.aptoFisico) {
+                        AlertDialog.Builder(holder.itemView.context)
+                            .setTitle("Apto físico requerido")
+                            .setMessage("El socio debe presentar el apto físico para inscribirse en actividades.")
+                            .setPositiveButton("Aceptar", null)
+                            .show()
+
                     } else {
                         val exito = db.inscribirSocioEnActividad(socioNumero, actividad.id)
                         if (exito) {
