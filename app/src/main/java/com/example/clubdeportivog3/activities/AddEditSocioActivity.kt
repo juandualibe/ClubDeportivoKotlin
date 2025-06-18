@@ -71,6 +71,24 @@ class AddEditSocioActivity : AppCompatActivity() {
             val carnetEntregado = checkCarnetEntregado.isChecked
             val pagoAlDia = checkPagoAlDia.isChecked
 
+            //ESTABLECER CUOTA FIJA PARA LOS SOCIOS
+            val CUOTA_FIJA = 15000.0
+
+            // Calcular deuda
+            val deuda = CUOTA_FIJA - cuota
+
+            if (deuda > 0) {
+                // PERMITIR la inscripción pero mostrar la deuda
+                Toast.makeText(this, "⚠️ ATENCIÓN: El socio adeuda $${deuda}. Cuota correcta: $${CUOTA_FIJA}", Toast.LENGTH_LONG).show()
+
+                // Opcional: También podrías setear pagoAlDia = false automáticamente
+                //checkPagoAlDia.isChecked = false
+            } else if (deuda < 0) {
+                // Si pagó de más
+                val exceso = Math.abs(deuda)
+                Toast.makeText(this, "ℹ️ El socio pagó $${exceso} de más. Cuota correcta: $${CUOTA_FIJA}", Toast.LENGTH_LONG).show()
+            }
+
             if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || telefono.isEmpty()) {
                 Toast.makeText(this, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
