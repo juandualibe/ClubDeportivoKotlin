@@ -33,9 +33,14 @@ class AdaptadorActividades(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val actividad = listaActividades[position]
+        val db = ClubDeportivoBD(holder.itemView.context)
+
+        // Calcular cupo disponible dinámicamente
+        val cupoDisponible = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
+
         holder.apply {
             textoNombre.text = actividad.nombre
-            textoDescripcion.text = "${actividad.descripcion}\nCupo: ${actividad.cupoMaximo}"
+            textoDescripcion.text = "${actividad.descripcion}\nCupo máximo: ${actividad.cupoMaximo}\nCupo disponible: $cupoDisponible"
 
             contenedorTexto.setOnClickListener {
                 val intent = Intent(itemView.context, ActividadDetailsActivity::class.java).apply {
@@ -53,6 +58,8 @@ class AdaptadorActividades(
                 onAccionActividad("eliminar", actividad)
             }
         }
+
+        db.close()
     }
 
     override fun getItemCount(): Int = listaActividades.size

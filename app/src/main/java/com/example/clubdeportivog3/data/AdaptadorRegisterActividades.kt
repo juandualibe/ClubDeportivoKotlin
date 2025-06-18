@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog3.R
@@ -14,13 +13,12 @@ import com.example.clubdeportivog3.activities.AddedRegistrationAceptedActivity
 import com.example.clubdeportivog3.model.Actividad
 
 class AdaptadorRegisterActividades(
-    private val actividades: List<Actividad>,
+    private val actividades: MutableList<Actividad>,
     private val socioNumero: Int,
     private val socioNombre: String
 ) : RecyclerView.Adapter<AdaptadorRegisterActividades.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val iconoActividad: ImageView = itemView.findViewById(R.id.iconoActividad)
         val textoNombre: TextView = itemView.findViewById(R.id.textoNombre)
         val textoDescripcion: TextView = itemView.findViewById(R.id.textoDescripcion)
         val btnInscribir: Button = itemView.findViewById(R.id.btnInscribir)
@@ -34,14 +32,17 @@ class AdaptadorRegisterActividades(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val actividad = actividades[position]
+        val db = ClubDeportivoBD(holder.itemView.context)
+
+        // Calcular cupo disponible dinámicamente
+        val cupoDisponible = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
+
         holder.textoNombre.text = actividad.nombre
-        holder.textoDescripcion.text = actividad.descripcion
+        holder.textoDescripcion.text = "${actividad.descripcion}\nCupo disponible: $cupoDisponible"
 
         holder.btnInscribir.setOnClickListener {
-            val db = ClubDeportivoBD(holder.itemView.context)
-
-            // Consultar cupo disponible para esta actividad
-            val cupoDisponible = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
+            // Recalcular cupo al momento del click
+            val cupoActualizado = db.obtenerCupoDisponible(actividad.id, actividad.cupoMaximo)
 
             AlertDialog.Builder(holder.itemView.context)
                 .setMessage("¿Está seguro que desea inscribir al socio a esta actividad?")
@@ -55,7 +56,7 @@ class AdaptadorRegisterActividades(
                             .setPositiveButton("Aceptar", null)
                             .show()
 
-                    } else if (cupoDisponible <= 0) {
+                    } else if (cupoActualizado <= 0) {
                         AlertDialog.Builder(holder.itemView.context)
                             .setTitle("Sin cupo")
                             .setMessage("No hay cupos disponibles para esta actividad.")
@@ -64,7 +65,8 @@ class AdaptadorRegisterActividades(
                     } else {
                         val exito = db.inscribirSocioEnActividad(socioNumero, actividad.id)
                         if (exito) {
-                            // Ya no es necesario reducir cupo, porque se calcula dinámicamente
+                            // Actualizar la vista inmediatamente
+                            notifyItemChanged(position)
 
                             val intent = Intent(holder.itemView.context, AddedRegistrationAceptedActivity::class.java).apply {
                                 putExtra("SOCIO_NUMERO", socioNumero)
@@ -84,6 +86,8 @@ class AdaptadorRegisterActividades(
                 .setCancelable(true)
                 .show()
         }
+
+        db.close()
     }
 
     override fun getItemCount(): Int = actividades.size

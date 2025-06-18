@@ -34,7 +34,8 @@ class RegisterInActivityNoSocioActivity : AppCompatActivity() {
 
         val db = ClubDeportivoBD(this)
 
-        val actividades = db.obtenerActividades()
+        // Convertir List a MutableList
+        val actividades = db.obtenerActividades().toMutableList()
 
         // Referencias a los elementos de la UI
         val btnVolver = findViewById<Button>(R.id.btnVolver)

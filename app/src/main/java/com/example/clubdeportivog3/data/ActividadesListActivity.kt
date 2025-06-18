@@ -55,15 +55,12 @@ class ActividadesListActivity : AppCompatActivity() {
                             if (exito) {
                                 listaActividades.remove(actividad)
                                 adaptador.notifyDataSetChanged()
-                                // En vez de Toast
                                 val intent = Intent(this, DeletedActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
-                                // Toast para error
                                 Toast.makeText(this, "Error al eliminar la actividad", Toast.LENGTH_SHORT).show()
                             }
-
                         }
                         .setNegativeButton("No", null)
                         .show()
@@ -87,7 +84,10 @@ class ActividadesListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         cargarActividades()
-        adaptador.notifyDataSetChanged()
+        // Notificar cambios para actualizar cupos
+        if (::adaptador.isInitialized) {
+            adaptador.notifyDataSetChanged()
+        }
     }
 
     private fun cargarActividades() {

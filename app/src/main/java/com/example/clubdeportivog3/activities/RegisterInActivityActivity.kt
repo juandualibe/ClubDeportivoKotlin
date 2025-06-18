@@ -32,7 +32,7 @@ class RegisterInActivityActivity : AppCompatActivity() {
         val socioNumero = intent.getIntExtra("socio_numero", -1)
         val socioNombre = intent.getStringExtra("socio_nombre") ?: "Desconocido"
 
-        val db = ClubDeportivoBD(this) // Contexto de la actividad
+        val db = ClubDeportivoBD(this)
 
         // Referencias a los elementos de la UI
         val btnVolver = findViewById<Button>(R.id.btnVolver)
@@ -40,7 +40,8 @@ class RegisterInActivityActivity : AppCompatActivity() {
 
         // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val actividades = db.obtenerActividades()
+        // Convertir List a MutableList
+        val actividades = db.obtenerActividades().toMutableList()
         recyclerView.contentDescription = getString(R.string.activity_list_description)
         adaptador = AdaptadorRegisterActividades(actividades, socioNumero, socioNombre)
         recyclerView.adapter = adaptador
