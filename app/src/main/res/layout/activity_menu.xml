@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    tools:context=".activities.MenuActivity">
+
+    <!-- LinearLayout para el título -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:text="@string/user_menu"
+            android:textAlignment="center"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Botón Socios -->
+    <Button
+        android:id="@+id/btnSocios"
+        android:layout_width="300dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:minWidth="200dp"
+        android:minHeight="100dp"
+        android:outlineProvider="none"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="30dp"
+        android:stateListAnimator="@null"
+        android:text="@string/socios"
+        android:textSize="20sp"
+        android:translationZ="0dp" />
+
+    <!-- Botón No Socios -->
+
+    <!-- Botón Actividades -->
+
+    <Button
+        android:id="@+id/btnNoSocios"
+        android:layout_width="300dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:minWidth="200dp"
+        android:minHeight="100dp"
+        android:outlineProvider="none"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="30dp"
+        android:stateListAnimator="@null"
+        android:text="@string/no_socios"
+        android:textSize="20sp"
+        android:translationZ="0dp" />
+
+    <!-- Espacio flexible para empujar el botón Salir hacia abajo -->
+
+    <Button
+        android:id="@+id/btnActividades3"
+        android:layout_width="300dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:elevation="0dp"
+        android:minWidth="200dp"
+        android:minHeight="100dp"
+        android:outlineProvider="none"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="30dp"
+        android:stateListAnimator="@null"
+        android:text="@string/actividades"
+        android:textSize="20sp"
+        android:translationZ="0dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_weight="1" />
+
+    <!-- LinearLayout para el botón Salir alineado a la derecha -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnSalir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_background"
+            android:elevation="0dp"
+            android:minWidth="100dp"
+            android:minHeight="60dp"
+            android:outlineProvider="none"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp"
+            android:stateListAnimator="@null"
+            android:text="@string/exit"
+            android:textSize="16sp"
+            android:translationZ="0dp" />
+    </LinearLayout>
+
+</LinearLayout>

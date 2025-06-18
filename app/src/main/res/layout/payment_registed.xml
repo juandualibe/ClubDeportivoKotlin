@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#F5FAFF"
+    android:padding="20dp"
+    tools:context=".activities.PaymentRegisteredActivity">
+
+    <!-- Imagen de confirmación -->
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/paid_icon"
+        app:srcCompat="@drawable/icono_signo_peso" />
+
+    <!-- Texto "Pago Registrado" -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/registered_payment"
+        android:textAlignment="center"
+        android:textColor="#3F51B5"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <!-- Botón Aceptar -->
+    <Button
+        android:id="@+id/buttonIngresar"
+        android:layout_width="144dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/button_background"
+        android:text="@string/accept"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

@@ -1,0 +1,177 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Nombre App -->
+    <string name="app_name">ClubDeportivoG3</string>
+
+    <!-- Logo -->
+    <string name="logo">Logo de la aplicación</string>
+
+    <!-- Botones generales -->
+    <string name="add">Agregar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="accept">Aceptar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="register_payment">Registrar Pago</string>
+    <string name="revoke">Revocar</string>
+    <string name="exit">Salir</string>
+
+    <!-- ícono de estado -->
+    <string name="confirmation_icon">ícono de confirmación</string>
+    <string name="canceled_icon">ícono cancelado</string>
+    <string name="paid_icon">ícono pagado</string>
+
+    <!-- Navegación y símbolos -->
+    <string name="back_arrow">Volver</string>
+    <string name="currency_symbol">$</string>
+
+    <!-- Log in -->
+    <string name="log_in">Ingresar</string>
+    <string name="enter_password">Ingresa tu contraseña</string>
+    <string name="enter_email">Ingresa tu correo electronico</string>
+    <string name="mostrar_contrasena">Mostrar contraseña</string>
+    <string name="register_not_account">¿No tienes una cuenta? Regístrate</string>
+
+    <!-- Registro -->
+    <string name="registration">Registrar</string>
+    <string name="registration_title">¡Bienvenido! Crea tu cuenta ahora</string>
+    <string name="enter_password_again">Ingresá tu contraseña nuevamente</string>
+    <string name="log_in_if_account">¿Ya tienes una cuenta? Ingresar</string>
+
+    <!-- Menu -->
+    <string name="user_menu">Menú de Usuario</string>
+    <string name="socios">Socios</string>
+    <string name="no_socios">No Socios</string>
+    <string name="actividades">Actividades</string>
+
+    <!-- Formularios -->
+    <string name="name">Nombre</string>
+    <string name="add_name">Añadir nombre</string>
+    <string name="add_activity_name">Añadir nombre de la actividad</string>
+    <string name="last_name">Apellido</string>
+    <string name="add_last_name">Añadir apellido</string>
+    <string name="dni">DNI</string>
+    <string name="add_document">Añadir documento</string>
+    <string name="email">Correo</string>
+    <string name="add_email">Añadir correo electrónico</string>
+    <string name="phone">Teléfono</string>
+    <string name="add_phone">Añadir número de teléfono</string>
+    <string name="payment">Pago diario</string>
+    <string name="payment_value">Añadir valor de la cuota diaria</string>
+    <string name="monthly_fee">Cuota Mensual</string>
+    <string name="add_monthly_fee">Añadir valor de la cuota mensual</string>
+    <string name="fitness">Apto Físico</string>
+    <string name="fitness_label">Apto físico del socio</string>
+    <string name="card">Carnet Entregado</string>
+    <string name="card_label">Carnet entregado al socio</string>
+    <string name="daily_payment">Pago al Día</string>
+    <string name="daily_payment_label">Pago al día del socio</string>
+    <string name="schedule">Horario</string>
+    <string name="add_schedule">Añadir el horario</string>
+    <string name="amount">Monto</string>
+    <string name="add_amount">Añadir el monto de la actividad</string>
+    <string name="quota">Cupo Máximo</string>
+    <string name="add_quota">Añadir el cupo</string>
+    <string name="activity_day">Día de la Actividad</string>
+    <string name="activity_day_spinner">Selector Día de la Actividad</string>
+
+    <!-- Actividades -->
+    <string name="activity">Actividad</string>
+    <string name="activity_add_edit_title">Añadir/Editar Actividad</string>
+    <string name="added_edited_activity">Actividad Añadida/Editada</string>
+    <string name="activity_details">Detalles de la Actividad</string>
+    <string name="activity_icon_description">Ícono de la actividad</string>
+    <string name="activity_id_label">Actividad N° #</string>
+    <string name="activity_list">Lista de Actividades</string>
+    <string name="activity_list_count">Lista de inscriptos (X/X)</string>
+    <string name="register_made">Inscripción realizada</string>
+    <string name="register_revoked">Inscripción revocada</string>
+    <string name="activity_deleted">Actividad eliminada</string>
+    <string name="activity_name_description">Nombre: Actividad\nDescripción: Detalles</string>
+    <string name="activity_name_placeholder">Nombre Actividad\nipsum dolor / ipsum dolor</string>
+    <string name="activity_inscribed">Inscritos en la actividad</string>
+    <string name="return_to_activity_list">Volver a la lista de actividades</string>
+    <string name="add_description">Agregá una descripción</string>
+
+
+    <!-- Socios -->
+    <string name="socio">Socio</string>
+    <string name="socio_list">Lista de socios</string>
+    <string name="socio_list_title">Lista de Socios</string>
+    <string name="expired_list_button">Vencimientos hoy</string>
+    <string name="expired_list_title">Vencimientos de hoy</string>
+    <string name="expired_list">Lista de vencimientos</string>
+    <string name="socio_details">DETALLES DEL SOCIO</string>
+    <string name="monthly_fee_amount">$ XXXXXX</string>
+    <string name="payment_pending">Pago pendiente</string>
+    <string name="registered_payment">Pago registrado</string>
+    <string name="socio_icon_description">Ícono del socio</string>
+    <string name="socio_number">Socio N°</string>
+    <string name="member_name">Nombre inscrito</string>
+    <string name="member_description_info">Nombre: Desconocido\nDNI: 12345678\nCorreo: desconocido@example.com</string>
+    <string name="sign_up_activity">Inscribir en Actividad</string>
+    <string name="add_edit_socio_title">Añadir/Editar Socio</string>
+    <string name="added_edited_socio">Socio Añadido/Editado</string>
+    <string name="deleted_socio">Socio Eliminado</string>
+
+    <string name="socio_numero">Socio N° %1$d</string>
+
+    <string name="detalle_socio">Nombre: %1$s %2$s\nDNI: %3$s\nCorreo: %4$s\nTeléfono: %5$s</string>
+
+    <string name="no_especificado">No especificado</string>
+
+    <string name="estado_pago_realizado">Pago realizado</string>
+    <string name="estado_pago_pendiente">Pago pendiente</string>
+
+    <string name="confirmar_registrar_pago">¿Está seguro que desea registrar un pago a este socio?</string>
+    <string name="boton_no">No</string>
+    <string name="boton_si">Sí</string>
+
+    <string name="error_registrar_pago">No se pudo registrar el pago. Intente de nuevo.</string>
+
+    <string name="error_revocar_inscripcion">No se pudo revocar la inscripción. Intente de nuevo.</string>
+
+    <!-- No Socios -->
+    <string name="daily_payment_amount">$ 500 (diario)</string>
+    <string name="daily_payment_title">Pago Diario</string>
+    <string name="registered_payment_and_register_made">Pago registrado e inscripción realizada</string>
+    <string name="no_socio_number">No Socio N°</string>
+    <string name="no_socio_icon_description">Ícono del no socio</string>
+    <string name="no_socio_details">DETALLES DEL NO SOCIO</string>
+    <string name="add_edit_no_socio_title">Añadir/Editar No Socio</string>
+    <string name="added_edited_no_socio">No Socio Añadido/Editado</string>
+    <string name="deleted_no_socio">No Socio Eliminado</string>
+    <string name="no_socio_list">Lista de no socios</string>
+    <string name="no_socio_list_title">Lista de No Socios</string>
+
+    <!-- Formulario Socios -->
+    <string name="document">Documento</string>
+
+    <!-- Otros -->
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti.</string>
+
+    <!-- Registro en actividades -->
+    <string name="register_in_activity">Inscribir en Actividad</string>
+    <string name="register">Inscribir</string>
+    <string name="register_in_activity_no_socio" />
+
+    <string name="actividad_no_encontrada">Actividad no encontrada</string>
+    <string name="actividad_numero">Actividad N° %1$d</string>
+    <string name="detalles_actividad">Nombre: %1$s\nDescripción: %2$s</string>
+    <string name="lista_inscriptos">Lista de inscriptos</string>
+    <string name="confirmar_revocar_inscripcion">¿Está seguro que desea revocar la inscripción de %1$s?</string>
+    <string name="btn_no">No</string>
+    <string name="btn_si">Sí</string>
+    <string name="inscripcion_revocada">Inscripción revocada</string>
+    <string name="error_no_eliminar_inscripcion">No se pudo eliminar la inscripción.</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Recurso para el contentDescription del RecyclerView -->
+    <string name="activity_list_description">Lista de actividades disponibles para inscripción</string>
+
+    <!-- Nuevos recursos para PaymentRegisteredAndInscriptionActivity -->
+    <string name="registered_payment_and_register">Pago registrado e inscripción realizada</string>
+
+    <!-- Nuevos recursos para DeletedActivity -->
+    <string name="deleted_activity">Actividad Eliminada</string>
+</resources>

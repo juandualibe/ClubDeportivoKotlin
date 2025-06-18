@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/card_background"
+    android:layout_marginVertical="4dp">
+
+    <!-- Ícono de pelota -->
+    <ImageView
+        android:id="@+id/iconoActividad"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_menu_today"
+        android:contentDescription="@string/activity_icon_description"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="center_vertical" />
+
+    <!-- Contenedor para nombre y descripción -->
+    <LinearLayout
+        android:id="@+id/contenedorTexto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Nombre de la actividad -->
+        <TextView
+            android:id="@+id/textoNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Descripción de la actividad -->
+        <TextView
+            android:id="@+id/textoDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <!-- Ícono de editar -->
+    <ImageView
+        android:id="@+id/iconoEditar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="@string/edit"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="center_vertical" />
+
+    <!-- Ícono de eliminar -->
+    <ImageView
+        android:id="@+id/iconoEliminar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/delete"
+        android:layout_gravity="center_vertical" />
+
+</LinearLayout>
