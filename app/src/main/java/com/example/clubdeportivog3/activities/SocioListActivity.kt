@@ -12,6 +12,10 @@ import com.example.clubdeportivog3.data.AdaptadorSocios
 import com.example.clubdeportivog3.data.ClubDeportivoBD
 import com.example.clubdeportivog3.model.Socio
 
+/**
+ * Pantalla que muestra la lista de socios y permite agregar, editar o eliminar.
+ */
+
 class SocioListActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -26,6 +30,7 @@ class SocioListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_socio_list)
 
+        // Agarramos los elementos del layout
         recyclerView = findViewById(R.id.recyclerViewSocios)
         btnAgregarSocio = findViewById(R.id.btnAgregar)
         btnVolver = findViewById(R.id.btnVolver)
@@ -41,9 +46,11 @@ class SocioListActivity : AppCompatActivity() {
 
         origen = intent.getStringExtra("ORIGEN") ?: "MenuActivity"
 
+        // Configuramos el RecyclerView para mostrar los socios
         recyclerView.layoutManager = LinearLayoutManager(this)
         adaptadorSocios = AdaptadorSocios(emptyList()) { accion: String, socio: Socio ->
             when (accion) {
+                // Vamos a la pantalla para editar el socio
                 "editar" -> {
                     val intent = Intent(this, AddEditSocioActivity::class.java).apply {
                         putExtra("SOCIO_ID", socio.id)
@@ -51,6 +58,7 @@ class SocioListActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
+                // Eliminamos el socio de la base de datos
                 "eliminar" -> {
                     val eliminado = baseDatos.eliminarSocio(socio.id)
                     if (eliminado) {
@@ -67,11 +75,13 @@ class SocioListActivity : AppCompatActivity() {
         }
         recyclerView.adapter = adaptadorSocios
 
+        // Botón para agregar un nuevo socio
         btnAgregarSocio.setOnClickListener {
             val intent = Intent(this, AddEditSocioActivity::class.java)
             startActivity(intent)
         }
 
+        // Botón para volver al menú o a la pantalla de vencimientos
         btnVolver.setOnClickListener {
             val intent = Intent(
                 this,
@@ -82,11 +92,13 @@ class SocioListActivity : AppCompatActivity() {
         }
     }
 
+    // Cuando volvemos a esta pantalla, actualizamos la lista
     override fun onResume() {
         super.onResume()
         actualizarListaSocios()
     }
 
+    // Función para recargar la lista de socios desde la base de datos
     private fun actualizarListaSocios() {
         val nuevosSocios = baseDatos.obtenerSocios()
         adaptadorSocios.actualizarLista(nuevosSocios)

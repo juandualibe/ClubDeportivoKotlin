@@ -15,47 +15,53 @@ import com.example.clubdeportivog3.data.ClubDeportivoBD
 import com.example.clubdeportivog3.model.Actividad
 import com.example.clubdeportivog3.model.NoSocio
 
-
+/**
+ * Pantalla que muestra los detalles de un no socio y sus actividades.
+ */
 class NoSocioDetailsActivity : AppCompatActivity() {
-
-    private lateinit var db: ClubDeportivoBD
-    private lateinit var noSocio: NoSocio
-    private lateinit var listaActividades: List<Actividad>
+    private lateinit var db: ClubDeportivoBD // Base de datos
+    private lateinit var noSocio: NoSocio // No socio actual
+    private lateinit var listaActividades: List<Actividad> // Actividades del no socio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_no_socio_details)
+        enableEdgeToEdge() // Usa toda la pantalla
+        setContentView(R.layout.activity_no_socio_details) // Carga el diseño
+
+        // Ajusta márgenes para barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        db = ClubDeportivoBD(this)
+        db = ClubDeportivoBD(this) // Conexión a la base de datos
 
+        // Sacamos el ID del no socio
         val noSocioId = intent.getIntExtra("NO_SOCIO_ID", -1)
         if (noSocioId == -1) {
-            finish()
+            finish() // Cerramos si no hay ID
             return
         }
 
+        // Sacamos de dónde venimos
         val origen = intent.getStringExtra("ORIGEN") ?: "noSocioListActivity"
 
+        // Buscamos el no socio en la base de datos
         val noSocioObtenido = db.obtenerNoSocio(noSocioId)
         if (noSocioObtenido == null) {
-            finish()
+            finish() // Cerramos si no existe
             return
         }
         noSocio = noSocioObtenido
 
-        // Referencias a los elementos del layout
+        // Agarramos los elementos del diseño
         val btnVolver = findViewById<Button>(R.id.btnVolver)
         val tvNoSocioNumero = findViewById<TextView>(R.id.tvSocioNumero)
         val tvDetalles = findViewById<TextView>(R.id.tvDetalles)
         val btnInscribirActividad = findViewById<Button>(R.id.btnInscribirActividad)
 
-        // Usar strings.xml con placeholders
+        // Mostramos la info del no socio
         tvNoSocioNumero.text = getString(R.string.socio_numero, noSocio.id)
         tvDetalles.text = getString(
             R.string.detalle_socio,
@@ -66,13 +72,10 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             noSocio.telefono
         )
 
-
-
-        // Obtener actividades del no socio
+        // Sacamos las actividades del no socio
         listaActividades = db.obtenerActividadesNoSocio(noSocioId)
 
-
-
+        // Botón para inscribir en una actividad (hay un duplicado, solo usamos uno)
         btnInscribirActividad.setOnClickListener {
             val intent = Intent(this, RegisterInActivityNoSocioActivity::class.java).apply {
                 putExtra("no_socio_numero", noSocio.id)
@@ -80,6 +83,8 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        // Botón para volver a la lista o vencimientos
         btnVolver.setOnClickListener {
             val intent = Intent(
                 this,
@@ -89,15 +94,7 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             finish()
         }
 
-        btnInscribirActividad.setOnClickListener {
-            val intent = Intent(this, RegisterInActivityNoSocioActivity::class.java).apply {
-                putExtra("no_socio_numero", noSocio.id)
-                putExtra("no_socio_nombre", "${noSocio.nombre} ${noSocio.apellido}")
-            }
-            startActivity(intent)
-        }
-
-        // Mostrar actividades en la UI
+        // Lista de TextViews y botones para mostrar hasta 5 actividades
         val activityViews = listOf(
             findViewById<TextView>(R.id.tvNombreActividad1) to findViewById<Button>(R.id.btnRevocar1),
             findViewById<TextView>(R.id.tvNombreActividad2) to findViewById<Button>(R.id.btnRevocar2),
@@ -106,13 +103,14 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.tvNombreActividad5) to findViewById<Button>(R.id.btnRevocar5)
         )
 
-
+        // Mostramos las actividades
         activityViews.forEachIndexed { index, (tvNombre, btnRevocar) ->
             if (index < listaActividades.size) {
                 val actividad = listaActividades[index]
-                tvNombre.visibility = View.VISIBLE
-                btnRevocar.visibility = View.VISIBLE
-                tvNombre.text = "${actividad.nombre}\n${actividad.descripcion}"
+                tvNombre.visibility = View.VISIBLE // Mostramos el texto
+                btnRevocar.visibility = View.VISIBLE // Mostramos el botón
+                tvNombre.text = "${actividad.nombre}\n${actividad.descripcion}" // Nombre y descripción
+                // Botón para revocar inscripción
                 btnRevocar.setOnClickListener {
                     AlertDialog.Builder(this)
                         .setMessage("¿Está seguro que desea revocar la inscripción del no socio en esta actividad?")
@@ -140,7 +138,7 @@ class NoSocioDetailsActivity : AppCompatActivity() {
                         .show()
                 }
             } else {
-                tvNombre.visibility = View.GONE
+                tvNombre.visibility = View.GONE // Ocultamos si no hay actividad
                 btnRevocar.visibility = View.GONE
             }
         }

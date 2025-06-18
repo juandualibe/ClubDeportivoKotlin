@@ -10,6 +10,15 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.clubdeportivog3.data.ActividadesListActivity
 import com.example.clubdeportivog3.R
 
+/**
+ * Activity principal que muestra el menú de navegación de la aplicación.
+ * Permite al usuario acceder a las diferentes secciones del sistema:
+ * - Gestión de Socios
+ * - Gestión de No Socios
+ * - Gestión de Actividades
+ * - Cerrar sesión
+ */
+
 class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

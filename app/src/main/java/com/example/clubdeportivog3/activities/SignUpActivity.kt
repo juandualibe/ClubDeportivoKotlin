@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.data.ClubDeportivoBD
 
+/**
+ * Pantalla para registrar un nuevo usuario (admin) con email y contraseña.
+ */
+
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

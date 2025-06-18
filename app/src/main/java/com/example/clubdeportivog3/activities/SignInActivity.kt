@@ -12,12 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.data.ClubDeportivoBD
 
+/**
+ * Pantalla de login donde el usuario mete su email y contraseña para entrar al sistema.
+ */
+
 class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main) // Carga el layout del login
 
+        // Agarramos los elementos del layout
         val email = findViewById<EditText>(R.id.editTextEmail)
         val password = findViewById<EditText>(R.id.editTextPassword)
         val button = findViewById<Button>(R.id.buttonIngresar)

@@ -8,28 +8,29 @@ import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.data.ClubDeportivoBD
 import com.example.clubdeportivog3.model.NoSocio
 
+/**
+ * Pantalla para agregar o editar un no socio.
+ */
 class AddEditNoSocioActivity : AppCompatActivity() {
-
-    private lateinit var bd: ClubDeportivoBD
-    private var noSocioId: Int? = null
-
-    private lateinit var etNombre: EditText
+    private lateinit var bd: ClubDeportivoBD // Base de datos
+    private var noSocioId: Int? = null // ID del no socio (si es edición)
+    private lateinit var etNombre: EditText // Campos de texto
     private lateinit var etApellido: EditText
     private lateinit var etDni: EditText
     private lateinit var etCorreo: EditText
     private lateinit var etTelefono: EditText
     private lateinit var etPagoDiario: EditText
-    private lateinit var cbAptoFisico: CheckBox
-    private lateinit var btnConfirmar: Button
+    private lateinit var cbAptoFisico: CheckBox // Checkbox
+    private lateinit var btnConfirmar: Button // Botones
     private lateinit var btnVolver: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_edit_no_socio)
+        setContentView(R.layout.activity_add_edit_no_socio) // Carga el diseño
 
-        bd = ClubDeportivoBD(this)
+        bd = ClubDeportivoBD(this) // Conexión a la base de datos
 
-        // Asignar referencias
+        // Agarramos los elementos del diseño
         etNombre = findViewById(R.id.etNombre)
         etApellido = findViewById(R.id.etApellido)
         etDni = findViewById(R.id.etDNI)
@@ -40,9 +41,8 @@ class AddEditNoSocioActivity : AppCompatActivity() {
         btnConfirmar = findViewById(R.id.btnConfirmar)
         btnVolver = findViewById(R.id.btnVolver)
 
-        // Obtener ID si es modo edición
+        // Si es edición, cargamos los datos del no socio
         noSocioId = intent.getIntExtra("NO_SOCIO_ID", -1).takeIf { it != -1 }
-
         noSocioId?.let { id ->
             val noSocio = bd.obtenerNoSocios().find { it.id == id }
             noSocio?.let {
@@ -56,6 +56,7 @@ class AddEditNoSocioActivity : AppCompatActivity() {
             }
         }
 
+        // Botón para guardar el no socio
         btnConfirmar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
@@ -65,45 +66,37 @@ class AddEditNoSocioActivity : AppCompatActivity() {
             val pagoDiario = etPagoDiario.text.toString().toDoubleOrNull() ?: 0.0
             val aptoFisico = cbAptoFisico.isChecked
 
+            // Validamos campos obligatorios
             if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
                 Toast.makeText(this, "Por favor, completa los campos obligatorios (Nombre, Apellido, DNI)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val noSocio = NoSocio(
-                id = noSocioId ?: 0,
-                nombre = nombre,
-                apellido = apellido,
-                dni = dni,
-                correo = if (correo.isEmpty()) null else correo,
-                telefono = telefono,
-                pagoDiario = pagoDiario,
-                aptoFisico = aptoFisico
-            )
-
-            // Verifica que el DNI no esté registrado ni como socio ni como no socio
+            // Chequeamos DNI duplicado
             if (bd.dniYaExiste(dni, noSocioId)) {
                 Toast.makeText(this, "Ya existe un socio o no socio con ese DNI", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val exito = if (noSocioId == null) {
-                bd.insertarNoSocio(noSocio)
-            } else {
-                bd.actualizarNoSocio(noSocio)
-            }
+            // Creamos el objeto NoSocio
+            val noSocio = NoSocio(
+                id = noSocioId ?: 0, nombre = nombre, apellido = apellido, dni = dni,
+                correo = if (correo.isEmpty()) null else correo, telefono = telefono,
+                pagoDiario = pagoDiario, aptoFisico = aptoFisico
+            )
 
-
+            // Guardamos o actualizamos el no socio
+            val exito = if (noSocioId == null) bd.insertarNoSocio(noSocio) else bd.actualizarNoSocio(noSocio)
             if (exito) {
                 val intent = Intent(this, AddedEditedNoSocioActivity::class.java)
                 startActivity(intent)
-                finish()
+                finish() // Cierra esta pantalla
             } else {
                 Toast.makeText(this, "Error al guardar no socio", Toast.LENGTH_SHORT).show()
             }
         }
 
-
+        // Botón para volver a la lista de no socios
         btnVolver.setOnClickListener {
             startActivity(Intent(this, NoSocioListActivity::class.java))
             finish()
