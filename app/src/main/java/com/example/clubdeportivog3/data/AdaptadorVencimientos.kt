@@ -14,7 +14,7 @@ import com.example.clubdeportivog3.activities.PaymentRegisteredActivity
 import com.example.clubdeportivog3.activities.SocioDetailsActivity
 
 class AdaptadorVencimientos(
-    private val listaVencimientos: List<String>,
+    private val listaVencimientos: MutableList<String>,
     private val onAccionVencimiento: (accion: String, socio: String) -> Unit
 ) : RecyclerView.Adapter<AdaptadorVencimientos.ViewHolder>() {
 
@@ -40,7 +40,7 @@ class AdaptadorVencimientos(
             val intent = Intent(holder.itemView.context, SocioDetailsActivity::class.java).apply {
                 putExtra("SOCIO_NOMBRE", socio)
                 putExtra("SOCIO_NUMERO", position + 100) // Número ficticio
-                putExtra("ORIGEN", "ExpirationActivity") // Indicar que viene de ExpirationActivity
+                putExtra("ORIGEN", "ExpirationActivity")
             }
             holder.itemView.context.startActivity(intent)
         }
@@ -49,13 +49,9 @@ class AdaptadorVencimientos(
         holder.iconoPago.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
                 .setMessage("¿Está seguro que desea registrar un pago a este socio?")
-                .setNegativeButton("No") { _, _ ->
-                    // No hacer nada, se queda en ExpirationActivity
-                }
+                .setNegativeButton("No") { _, _ -> }
                 .setPositiveButton("Sí") { _, _ ->
-                    // Navegar a PaymentRegisteredActivity
-                    val intent = Intent(holder.itemView.context, PaymentRegisteredActivity::class.java)
-                    holder.itemView.context.startActivity(intent)
+                    onAccionVencimiento("pago", socio)
                 }
                 .setCancelable(true)
                 .show()
@@ -63,11 +59,8 @@ class AdaptadorVencimientos(
         holder.iconoEliminar.setOnClickListener {
             AlertDialog.Builder(holder.itemView.context)
                 .setMessage("¿Está seguro que desea eliminar este socio?")
-                .setNegativeButton("No") { _, _ ->
-                    // No hacer nada, se queda en ExpirationActivity
-                }
+                .setNegativeButton("No") { _, _ -> }
                 .setPositiveButton("Sí") { _, _ ->
-                    // Navegar a DeletedSocioActivity
                     val intent = Intent(holder.itemView.context, DeletedSocioActivity::class.java)
                     holder.itemView.context.startActivity(intent)
                 }

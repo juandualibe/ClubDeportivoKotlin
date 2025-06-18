@@ -10,9 +10,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog3.data.AdaptadorVencimientos
+import com.example.clubdeportivog3.data.ClubDeportivoBD
+import com.example.clubdeportivog3.model.Socio
 import com.example.clubdeportivog3.R
 
 class ExpirationActivity : AppCompatActivity() {
+
+    private lateinit var baseDatos: ClubDeportivoBD
+    private lateinit var recyclerViewVencimientos: RecyclerView
+    private lateinit var adaptadorVencimientos: AdaptadorVencimientos
+    private var nombresVencimientos = mutableListOf<String>()
+    private var sociosVencidos = mutableListOf<Socio>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -23,37 +32,37 @@ class ExpirationActivity : AppCompatActivity() {
             insets
         }
 
-        // Configurar RecyclerView
-        val recyclerViewVencimientos = findViewById<RecyclerView>(R.id.recyclerViewVencimientos)
+        baseDatos = ClubDeportivoBD(this)
+        recyclerViewVencimientos = findViewById(R.id.recyclerViewVencimientos)
         recyclerViewVencimientos.layoutManager = LinearLayoutManager(this)
 
-        // Lista de socios con vencimientos (ejemplo)
-        val listaVencimientos = listOf(
-            "Juan Pérez",
-            "María Gómez",
-            "Carlos López",
-            "Ana Martínez"
-        )
+        cargarVencimientos()
 
-        // Configurar adaptador
-        val adaptadorVencimientos = AdaptadorVencimientos(listaVencimientos) { accion, socio ->
-            when (accion) {
-                "pago" -> {
-                    // No es necesario manejar el pago aquí, ya que se maneja en AdaptadorVencimientos
-                }
-                "eliminar" -> {
-                    // No es necesario manejar la eliminación aquí, ya que se maneja en AdaptadorVencimientos
+        adaptadorVencimientos = AdaptadorVencimientos(nombresVencimientos) { accion, nombreCompleto ->
+            if (accion == "pago") {
+                val socio = sociosVencidos.find { "${it.nombre} ${it.apellido}" == nombreCompleto }
+                socio?.let {
+                    baseDatos.registrarPago(it.id)
+                    cargarVencimientos()
                 }
             }
         }
         recyclerViewVencimientos.adapter = adaptadorVencimientos
 
-        // Botón Volver
         val btnVolver = findViewById<Button>(R.id.btnVolver)
         btnVolver.setOnClickListener {
             val intent = Intent(this, SocioListActivity::class.java)
             startActivity(intent)
-            finish() // Cierra ExpirationActivity
+            finish()
+        }
+    }
+
+    private fun cargarVencimientos() {
+        sociosVencidos = baseDatos.obtenerSociosVencenHoy().toMutableList()
+        nombresVencimientos.clear()
+        nombresVencimientos.addAll(sociosVencidos.map { "${it.nombre} ${it.apellido}" })
+        if (::adaptadorVencimientos.isInitialized) {
+            adaptadorVencimientos.notifyDataSetChanged()
         }
     }
 }

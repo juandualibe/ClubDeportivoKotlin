@@ -31,6 +31,14 @@ class SocioListActivity : AppCompatActivity() {
         btnVolver = findViewById(R.id.btnVolver)
         baseDatos = ClubDeportivoBD(this)
 
+        // INICIO: AGREGADO - Inicialización del botón Vencimientos hoy
+        val btnVencimientos = findViewById<Button>(R.id.btnVencimientos)
+        btnVencimientos.setOnClickListener {
+            val intent = Intent(this, ExpirationActivity::class.java)
+            startActivity(intent)
+        }
+        // FIN: AGREGADO
+
         origen = intent.getStringExtra("ORIGEN") ?: "MenuActivity"
 
         recyclerView.layoutManager = LinearLayoutManager(this)
