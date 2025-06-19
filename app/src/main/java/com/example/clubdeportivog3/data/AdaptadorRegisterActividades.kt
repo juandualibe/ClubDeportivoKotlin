@@ -1,5 +1,6 @@
 package com.example.clubdeportivog3.data
 
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clubdeportivog3.R
 import com.example.clubdeportivog3.activities.AddedRegistrationAceptedActivity
+import com.example.clubdeportivog3.activities.RegisterInActivityActivity
 import com.example.clubdeportivog3.model.Actividad
 
 /**
@@ -92,12 +94,21 @@ class AdaptadorRegisterActividades(
                         val exito = db.inscribirSocioEnActividad(socioNumero, actividad.id)
                         if (exito) {
                             notifyItemChanged(position) // Actualiza la vista
+                            // Agarramos la actividad actual para establecer el resultado
+                            val activity = holder.itemView.context as? RegisterInActivityActivity
+                            activity?.setResult(
+                                RESULT_OK,
+                                Intent().putExtra("INSCRIPCION_REALIZADA", true)
+                            )
+                            // Vamos a la pantalla de confirmación
                             val intent = Intent(holder.itemView.context, AddedRegistrationAceptedActivity::class.java).apply {
-                                putExtra("SOCIO_NUMERO", socioNumero)
+                                putExtra("SOCIO_ID", socioNumero)
                                 putExtra("SOCIO_NOMBRE", socioNombre)
                                 putExtra("ACTIVIDAD_NOMBRE", actividad.nombre)
+                                putExtra("ORIGEN", "SocioDetailsActivity") // Indicamos que venimos de SocioDetailsActivity
                             }
                             holder.itemView.context.startActivity(intent)
+                            activity?.finish() // Cerramos RegisterInActivityActivity
                         } else {
                             AlertDialog.Builder(holder.itemView.context)
                                 .setTitle("Error")

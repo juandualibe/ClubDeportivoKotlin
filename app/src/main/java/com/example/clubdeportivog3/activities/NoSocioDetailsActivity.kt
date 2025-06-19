@@ -22,6 +22,12 @@ class NoSocioDetailsActivity : AppCompatActivity() {
     private lateinit var db: ClubDeportivoBD // Base de datos
     private lateinit var noSocio: NoSocio // No socio actual
     private lateinit var listaActividades: List<Actividad> // Actividades del no socio
+    private lateinit var activityViews: List<Pair<TextView, Button>> // Lista para los TextViews y botones de actividades
+
+    // Código para identificar la inscripción
+    companion object {
+        private const val REQUEST_INSCRIPCION = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +51,7 @@ class NoSocioDetailsActivity : AppCompatActivity() {
         }
 
         // Sacamos de dónde venimos
-        val origen = intent.getStringExtra("ORIGEN") ?: "noSocioListActivity"
+        val origen = intent.getStringExtra("ORIGEN") ?: "NoSocioListActivity"
 
         // Buscamos el no socio en la base de datos
         val noSocioObtenido = db.obtenerNoSocio(noSocioId)
@@ -61,6 +67,18 @@ class NoSocioDetailsActivity : AppCompatActivity() {
         val tvDetalles = findViewById<TextView>(R.id.tvDetalles)
         val btnInscribirActividad = findViewById<Button>(R.id.btnInscribirActividad)
 
+        // Lista de TextViews y botones para mostrar hasta 5 actividades
+        activityViews = listOf(
+            findViewById<TextView>(R.id.tvNombreActividad1) to findViewById<Button>(R.id.btnRevocar1),
+            findViewById<TextView>(R.id.tvNombreActividad2) to findViewById<Button>(R.id.btnRevocar2),
+            findViewById<TextView>(R.id.tvNombreActividad3) to findViewById<Button>(R.id.btnRevocar3),
+            findViewById<TextView>(R.id.tvNombreActividad4) to findViewById<Button>(R.id.btnRevocar4),
+            findViewById<TextView>(R.id.tvNombreActividad5) to findViewById<Button>(R.id.btnRevocar5)
+        )
+
+        // Cargamos las actividades del no socio
+        cargarActividades()
+
         // Mostramos la info del no socio
         tvNoSocioNumero.text = getString(R.string.socio_numero, noSocio.id)
         tvDetalles.text = getString(
@@ -72,16 +90,13 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             noSocio.telefono
         )
 
-        // Sacamos las actividades del no socio
-        listaActividades = db.obtenerActividadesNoSocio(noSocioId)
-
-        // Botón para inscribir en una actividad (hay un duplicado, solo usamos uno)
+        // Botón para inscribir en una actividad
         btnInscribirActividad.setOnClickListener {
             val intent = Intent(this, RegisterInActivityNoSocioActivity::class.java).apply {
                 putExtra("no_socio_numero", noSocio.id)
                 putExtra("no_socio_nombre", "${noSocio.nombre} ${noSocio.apellido}")
             }
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_INSCRIPCION) // Usamos startActivityForResult
         }
 
         // Botón para volver a la lista o vencimientos
@@ -93,16 +108,12 @@ class NoSocioDetailsActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
 
-        // Lista de TextViews y botones para mostrar hasta 5 actividades
-        val activityViews = listOf(
-            findViewById<TextView>(R.id.tvNombreActividad1) to findViewById<Button>(R.id.btnRevocar1),
-            findViewById<TextView>(R.id.tvNombreActividad2) to findViewById<Button>(R.id.btnRevocar2),
-            findViewById<TextView>(R.id.tvNombreActividad3) to findViewById<Button>(R.id.btnRevocar3),
-            findViewById<TextView>(R.id.tvNombreActividad4) to findViewById<Button>(R.id.btnRevocar4),
-            findViewById<TextView>(R.id.tvNombreActividad5) to findViewById<Button>(R.id.btnRevocar5)
-        )
-
+    // Método para cargar y mostrar las actividades del no socio
+    private fun cargarActividades() {
+        // Sacamos las actividades del no socio
+        listaActividades = db.obtenerActividadesNoSocio(noSocio.id)
         // Mostramos las actividades
         activityViews.forEachIndexed { index, (tvNombre, btnRevocar) ->
             if (index < listaActividades.size) {
@@ -141,6 +152,15 @@ class NoSocioDetailsActivity : AppCompatActivity() {
                 tvNombre.visibility = View.GONE // Ocultamos si no hay actividad
                 btnRevocar.visibility = View.GONE
             }
+        }
+    }
+
+    // Método para manejar el resultado de la inscripción
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Si venimos de la inscripción y fue exitosa, recargamos las actividades
+        if (requestCode == REQUEST_INSCRIPCION && resultCode == RESULT_OK && data?.getBooleanExtra("INSCRIPCION_REALIZADA", false) == true) {
+            cargarActividades()
         }
     }
 }

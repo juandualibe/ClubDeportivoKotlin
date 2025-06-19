@@ -272,6 +272,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/revoke"/>
+
+                <Button
+                    android:id="@+id/btnGenerarCarnet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generar Carnet"
+                    android:layout_marginTop="16dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

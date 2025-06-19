@@ -14,6 +14,6 @@ data class Socio(
     val telefono: String,
     val cuota: Double,
     val aptoFisico: Boolean,
-    val carnetEntregado: Boolean,
+    var carnetEntregado: Boolean,
     val pagoAlDia: Boolean
 )
